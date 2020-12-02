@@ -1,4 +1,4 @@
-# Cadvision-Task
+# Posts,comments with Django Rest & Ajax
 
 # Backend
 1) django & djangorestframework
