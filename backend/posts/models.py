@@ -3,21 +3,12 @@ from django.db import models
 from django.contrib.auth.models import User
 # Create your models here.
 
-#User model
-# class User(models.Model):
-#     user_id = models.AutoField(primary_key=True)
-#     first_name= models.CharField(max_length=255)
-
-#     def __str__(self):
-#         return self.first_name
-
-
-
 
 #Posts model(OneToMany Relationship with User)
 class Posts(models.Model):
     post_id = models.AutoField(primary_key=True)
-    user_id = models.ForeignKey(User,related_name='posts',on_delete=models.CASCADE)
+    #user_id = models.ForeignKey(User,related_name='posts',on_delete=models.CASCADE)
+    user_name = models.CharField( max_length=255)
     post_date = models.DateTimeField( auto_now_add=True,blank=True)
     post_title = models.TextField()
     likes = models.IntegerField(default=0)

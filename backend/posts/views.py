@@ -1,29 +1,28 @@
 from .models import Posts,User,Comments
-from .serializers import PostsSerializer,UserSerializer,CommentSerializer
+from .serializers import PostsSerializer,CommentSerializer
 
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListCreateAPIView
 from django.shortcuts import get_object_or_404
+from django.shortcuts import render
 
-from rest_framework.permissions import IsAuthenticated
+#index view
+def index(request):
+    return render(request,'index.html')
 
 
-class users(ListCreateAPIView):
-    #permission_classes = (IsAuthenticated,)  
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    
-class posts(ListCreateAPIView):
-    #permission_classes = (IsAuthenticated,)  
+
+#API to get/post the posts    
+class posts(ListCreateAPIView): 
     serializer_class = PostsSerializer
     
     def get_queryset(self):
        posts = Posts.objects.all().order_by('-post_date')
        return posts
 
-    # Get all posts
     def get(self, request):
+        '''Get all Posts'''
         posts = self.get_queryset()
         #paginate_queryset = self.paginate_queryset(posts)
         serializer = self.serializer_class(posts, many=True)
@@ -31,27 +30,27 @@ class posts(ListCreateAPIView):
             return Response([{"msg":"no data"}])
         return Response(serializer.data,status=status.HTTP_200_OK)
 
-    # Create a new post
     def post(self, request):
+        '''Creates new post'''
         serializer = PostsSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+#API for Comments
 class comments(ListCreateAPIView):
-    #permission_classes = (IsAuthenticated,)  
     queryset = Comments.objects.all()
     serializer_class = CommentSerializer
 
-
+#API for likes
 class postlike(RetrieveUpdateDestroyAPIView):
-    #permission_classes = (IsAuthenticated,)  
     queryset = Posts.objects.all()
     serializer_class = PostsSerializer
 
 
     def put(self, request, pk):
+        '''Update like count by 1'''
         model = get_object_or_404(Posts, pk=pk)
         #serializer = PostsSerializer(model, data=request.data)
         data = {"likes" : model.likes+1}
@@ -61,13 +60,14 @@ class postlike(RetrieveUpdateDestroyAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+#API for Dislikes
 class postdislike(RetrieveUpdateDestroyAPIView):
-    #permission_classes = (IsAuthenticated,)  
     queryset = Posts.objects.all()
     serializer_class = PostsSerializer
 
 
     def put(self, request, pk):
+        '''updates dislike count by 1'''
         model = get_object_or_404(Posts, pk=pk)
         serializer = PostsSerializer(model, data=request.data)
         data = {"dislikes" : model.dislikes+1}

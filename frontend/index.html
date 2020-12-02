@@ -89,7 +89,7 @@
                 success: function(data){
                 data.map((post)=>{
                     $('.container').append(`
-                    <div  style='border:1px solid black;padding:15px;' class='${post.post_id}'><h2 align='left'><font color='blue'>${post.post_title}</font></h2>
+                    <div  style='border:1px solid black;padding:15px;' class='${post.post_id}'><h2 align='left'><font color='blue'> ${post.post_title}</font></h2>
                     <p>posted on <font color='green'>${post.post_date.split('T')[0]+' '+post.post_date.split('T')[1].split('.')[0]}</font> by <font color='Tomato'>${post.user_name}</font></p>
                     <button onclick=like(${post.post_id})>Like</button>&nbsp<button onclick=dislike(${post.post_id})>DisLike</button>
                     <p id="p${post.post_id}"> ${post.likes} Likes &nbsp ${post.dislikes} dislikes</p>

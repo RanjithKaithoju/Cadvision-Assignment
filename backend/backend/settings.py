@@ -14,6 +14,8 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+import os
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -24,8 +26,6 @@ SECRET_KEY = 'xzdp#gcsybj6-3l4d-lbzie5bjz$9z^(+1!!@-r+^a&h$7*gs1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -39,20 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'posts',
     'rest_framework',
-    'rest_framework.authtoken' ,
-    'djoser',
     'corsheaders',
-    
-
-
     
 ]
 
-REST_FRAMEWORK = {
-      'DEFAULT_AUTHENTICATION_CLASSES': [
-      'rest_framework.authentication.TokenAuthentication',
-      ],
-}
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -74,8 +65,8 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
+        'DIRS': [os.path.join(BASE_DIR,'../frontend'),],
+        'APP_DIRS':True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
