@@ -22,7 +22,7 @@ import os
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'xzdp#gcsybj6-3l4d-lbzie5bjz$9z^(+1!!@-r+^a&h$7*gs1'
+SECRET_KEY = os.getenv('key','')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
