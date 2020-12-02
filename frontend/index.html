@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script>
+
+      function submitpost(){
+        post = document.getElementById('posttext').value
+        name = document.getElementById('name').value
+          if (post === '' | name =='')   {
+            alert('PLease enter both fields')
+          }
+
+          $.ajax({
+                 type: "POST",
+                 url: `http://localhost:8000/posts/`,
+                 data : {"post_title":post,"user_name":name},
+                success: function(data){
+                    alert('Post Added Successfully')
+                    location.reload()
+                                                
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                    alert("Error: " + errorThrown); 
+                } })
+        
+      }
+      function like(post_id){
+          $.ajax({
+                 type: "PUT",
+                 url: `http://localhost:8000/post/like/${post_id}/`,
+                success: function(data){
+                    $('#p'+data.post_id).text(`${data.likes} Likes  ${data.dislikes} dislikes`)
+                                                
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                    alert("Error: " + errorThrown); 
+                } })
+      }
+      function dislike(post_id){
+        $.ajax({
+                 type: "PUT",
+                 url: `http://localhost:8000/post/dislike/${post_id}/`,
+                success: function(data){
+                    $('#p'+data.post_id).text(`${data.likes} Likes  ${data.dislikes} dislikes`)
+                                                
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                    alert("Error: " + errorThrown); 
+                } })
+      }
+      function submitComment(id){
+          comment = document.getElementById(id).value
+          if (comment !==''){
+
+          
+          $.ajax({
+                 type: "POST",
+                 data : {"post_id":id,"body":comment},
+                 url: "http://localhost:8000/comments/",
+                success: function(data){
+                        alert(`Added Comment ${data.body} to the post`)
+                        document.getElementById(id.toString()).value = "";
+                        $('.'+data.post_id+' '+'#'+data.post_id+':last').before(` <p><font color='orange'>${data.id})  ${data.body}</font> commented on ${data.date}</p2>`)
+                                                
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                    alert("Error: " + errorThrown); 
+                } 
+  
+             });
+             
+          }
+          else{
+              alert('please write something...')
+          }
+
+      }
+            $(document).ready(function(){
+            $('.container').append(`<h3><font color='green'>Posts:</font></h3>`)
+            $.ajax({ url: "http://localhost:8000/posts/",
+                type:'GET',
+                context: document.body,
+                success: function(data){
+                data.map((post)=>{
+                    $('.container').append(`
+                    <div  style='border:1px solid black;padding:15px;' class='${post.post_id}'><h2 align='left'><font color='blue'>${post.post_title}</font></h2>
+                    <p>posted on <font color='green'>${post.post_date.split('T')[0]+' '+post.post_date.split('T')[1].split('.')[0]}</font> by <font color='Tomato'>${post.user_name}</font></p>
+                    <button onclick=like(${post.post_id})>Like</button>&nbsp<button onclick=dislike(${post.post_id})>DisLike</button>
+                    <p id="p${post.post_id}"> ${post.likes} Likes &nbsp ${post.dislikes} dislikes</p>
+                    </div>
+      
+                        `)
+                        $('.'+post.post_id).append(`<h3>Comments</h3>`)
+                    post.comments.map(comment => {
+                        $('.'+post.post_id).append(` <p><font color='orange'>-->)  ${comment.body}</font> commented on ${comment.date.split('T')[0]+' '+comment.date.split('T')[1].split('.')[0]}</p2>`)
+                    })
+                    $('.'+post.post_id).append(`<input type='text' id='${post.post_id}' placeholder='WriteComment...'/><button onClick=submitComment(${post.post_id})>Submit</button>`)
+                    })
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                    alert("Error: " + errorThrown); 
+                } 
+                
+                });
+             });
+    </script>
+</head>
+<body>
+
+
+  
+<div class="container">
+<div class="jumbotron text-center">
+  <h1>Post Something Here</h1>
+  Post: <textarea id="posttext" rows="3" cols="70"></textarea>
+  Your name: <input type="text" id='name' placeholder="Enter your name"/>
+  <button onclick="submitpost()">Post</button>
+</div>
+</div>
+
+</body>
+</html>
