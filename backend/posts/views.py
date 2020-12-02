@@ -44,6 +44,7 @@ class comments(ListCreateAPIView):
     queryset = Comments.objects.all()
     serializer_class = CommentSerializer
 
+
 class postlike(RetrieveUpdateDestroyAPIView):
     #permission_classes = (IsAuthenticated,)  
     queryset = Posts.objects.all()
@@ -52,7 +53,7 @@ class postlike(RetrieveUpdateDestroyAPIView):
 
     def put(self, request, pk):
         model = get_object_or_404(Posts, pk=pk)
-        serializer = PostsSerializer(model, data=request.data)
+        #serializer = PostsSerializer(model, data=request.data)
         data = {"likes" : model.likes+1}
         serializer = PostsSerializer(model,data=data,partial=True)
         if serializer.is_valid():

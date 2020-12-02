@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken' ,
     'djoser',
+    'corsheaders',
     
 
 
@@ -60,9 +61,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
+CORS_ORIGIN_ALLOW_ALL=True
+CORS_ORIGIN_WHITELIST = [
 
-
+    'http://l127.0.0.1:8000',
+    'http://127.0.0.1:80'
+]
 ROOT_URLCONF = 'backend.urls'
 
 TEMPLATES = [
@@ -133,3 +139,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+ALLOWED_HOSTS = ['*']
