@@ -13,11 +13,11 @@ python manage.py makemigrations
 python manage.py migrate
 python manage.py migrate --run-syncdb
 
-API'S
-posts/
-comments/
-^post/like/(?P<pk>\d+)/$ [name='post_like']
-^post/dislike/(?P<pk>\d+)/$ [name='post_dislike']
+# API'S
+1) posts/
+2) comments/
+3) ^post/like/(?P<pk>\d+)/$ [name='post_like']
+4) ^post/dislike/(?P<pk>\d+)/$ [name='post_dislike']
 
 
 # Front end(Single Page App)
