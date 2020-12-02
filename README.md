@@ -1,6 +1,6 @@
 # Cadvision-Task
 
-#Backend
+# Backend
 1) django & djangorestframework
 Install required packages from requirement.txt
 
@@ -20,6 +20,6 @@ comments/
 ^post/dislike/(?P<pk>\d+)/$ [name='post_dislike']
 
 
-#Front end(Single Page App)
+# Front end(Single Page App)
 frontend/index.html
 -->Ajax calls for API's.
